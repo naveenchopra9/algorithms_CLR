@@ -44,8 +44,8 @@ int parent[300+3];
 bool AC[300+3];
 int low[300+3];
 int disc[300+3];
-int timevalue =0;
-int child=0;
+int timevalue=0;
+
 //To find the articulation point in graph
  void DFS(int V,int vertex)
  {
@@ -54,7 +54,7 @@ int child=0;
 
  	timevalue=timevalue+1;
 
- 	child=0;
+ 	int child=0;
 
  	REP(i,0,V)
  	{
@@ -62,19 +62,23 @@ int child=0;
  		{
  			if(visited[i]==false)
  			{
+ 				// printf("%d \n",i );
  				child=child+1;
  				parent[i]=vertex;
  				DFS(V,i);
  			
  			low[vertex]=min(low[vertex],low[i]);
- 			if(parent[vertex]==-1&&child>1)
+ 			if(parent[vertex]==-1&&	child>1)
  			{
+ 				// printf("hi%d ",child );
  				AC[vertex]=true;
  			}
+
  			if(parent[vertex]!=-1&&low[i]>=disc[vertex])
  			{
  				AC[vertex]=true;
  			}
+
  			}
  			else if(parent[vertex]!=i)
  					 low[vertex]=min(low[vertex],disc[i]);
@@ -86,31 +90,38 @@ int child=0;
 
 void ACPOINT(int V)
 {
-	Set(visited,false);
+	
+
 	REP(i,0,V)
+	{
 		parent[i]=-1;
-	Set(AC,false);
+		visited[i]=false;
+		low[i]=0;
+		disc[i]=0;
+		AC[i]=false;
+	}
 	//which stores, for every vertex v, the discovery timevalue of the earliest discovered vertex to which v
 	// or any of the vertices in the subtree rooted at 
      //v is having a back edge. It is initialized by INFINITY.
 
-
-	Set(low,0);
 	// discovery timevalue of every vertex. It is initialized by 0.
-	Set(disc,0);
-	DFS(V,0);
+
+	REP(i,0,V)
+	 	if(visited[i]==false)
+			DFS(V,i);
+
 	REP(i,0,V)
 	{
 		REP(j,0,V)
 		printf("%d ",adj[i][j] );
 		printf("\n");
 	}
+	printf("point\n");
 	REP(i,0,V)
 	{
-		// if(visited[i]==true)
-		// 	printf("# %d ",i);
+		// printf("%d \n",parent[i] );
 	if(AC[i]==true)
-		printf("%d ",i );
+			printf("%d ",i );
 	}
 }
 
@@ -133,9 +144,9 @@ int main(int argc, char const *argv[])
 		int x,y;     
   		x=IN; 
   		y=IN;
-		adj[x-1][y-1]=1;
-		adj[y-1][x-1]=1;
+		adj[x][y]=1;
+		adj[y][x]=1;
 	}
-	ACPOINT(V-1);
+	ACPOINT(V);
 	return 0;
 }
