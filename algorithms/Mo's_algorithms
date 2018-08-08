@@ -1,0 +1,87 @@
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
+#include <set>
+#include <list>
+#include <unordered_set>
+#include <algorithm>
+#include <queue>
+#include <iostream>
+#include <cstring>
+#include <limits.h>
+#include <map>
+#include <unordered_map>
+#include <stack>
+#include <stdlib.h>
+#include <vector>
+#include <cstring>
+#include <sstream>
+using namespace std;
+typedef long long ll;
+typedef pair<int, int> pi;
+#define MAXV 2147483647
+#define MINV -2147483647
+#define SYC ios_base::sync_with_stdio(0); cin.tie(0)
+#define FR freopen("/Users/naveen/Documents/input.txt","r",stdin)
+#define FW freopen("/Users/naveen/Documents/input.txt","w",stdout)
+#define M 1000000007
+vector<int>adj[100001];
+int b;
+bool cop(pi aa,pi ba){
+    if((aa.first/b)!=(ba.first/b)){
+        return (aa.first/b)<(ba.first/b);
+    }
+    return aa.second<ba.second;
+}
+void find_sol(vector<pair<int,int> > &arr,int a[],int n){
+    int left=0,right=0,sum=0;
+    for(int i =0 ; i<arr.size() ; i++){
+        int L=arr[i].first,R=arr[i].second;
+        while(left>L){
+            sum+=a[left-1];
+            left--;
+        }
+        
+        while (left<L) {
+            sum-=a[left];
+            left++;
+        }
+        
+        while(right-1>R){
+            sum-=a[right-1];
+            right--;
+        }
+        
+        while(right<=R){
+            sum+=a[right];
+            right++;
+        }
+        
+        cout<<"range"<<L<<" "<<R<<" "<<sum<<endl;
+    }
+}
+int main()
+{
+    
+    int n;
+    cin>>n;
+    int a[n];
+    for(int i =0 ; i < n ; i++){
+        cin>>a[i];
+    }
+    int q,x,y;
+    cin>>q;
+    vector<pair<int, int>>vec;
+    for(int i =0 ; i< q; i++){
+        cin>>x>>y;
+        vec.push_back(make_pair(x,y));
+    }
+     b=sqrt(n);
+    
+    sort(vec.begin(),vec.end(),cop);
+    for(auto x:vec){
+        cout<<x.first<<" "<<x.second<<endl;
+    }
+    find_sol(vec,a,n);
+    return 0;
+}
